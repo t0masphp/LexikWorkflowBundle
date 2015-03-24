@@ -90,7 +90,11 @@ class ProcessHandler implements ProcessHandlerInterface
         $currentModelState = $this->storage->findCurrentModelState($model, $this->process->getName());
 
         if ( ! ($currentModelState instanceof ModelState) ) {
-            throw new WorkflowException(sprintf('The given model has not started the "%s" process.', $this->process->getName()));
+            $this->start($model);
+            $currentModelState = $this->storage->findCurrentModelState($model, $this->process->getName());
+            if ( ! ($currentModelState instanceof ModelState) ) {
+                throw new WorkflowException(sprintf('The given model has not started the "%s" process.', $this->process->getName()));
+            }
         }
 
         $currentStep = $this->getProcessStep($currentModelState->getStepName());
@@ -178,6 +182,29 @@ class ProcessHandler implements ProcessHandlerInterface
         }
 
         return $modelState;
+    }
+
+    /**
+     * @param ModelInterface $model
+     * @return array of ModelState
+     * @throws WorkflowException
+     */
+    public function getNextSteps(ModelInterface $model) {
+        $currentModelState = $this->storage->findCurrentModelState($model, $this->process->getName());
+
+        if ( ! ($currentModelState instanceof ModelState) ) {
+            throw new WorkflowException(sprintf('The given model has not started the "%s" process.', $this->process->getName()));
+        }
+
+        $currentStep = $this->getProcessStep($currentModelState->getStepName());
+
+//        if ( !$currentStep->hasNextState($stateName) ) {
+//            throw new WorkflowException(sprintf('The step "%s" does not contain any next state named "%s".', $currentStep->getName(), $stateName));
+//        }
+
+        $state = $currentStep->getNextStates();
+//        $step = $state->getTarget($model);
+        return $state;
     }
 
     /**

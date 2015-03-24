@@ -5,6 +5,7 @@ namespace Lexik\Bundle\WorkflowBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use GS\CommonBundle\Entity\Product;
 
 use Lexik\Bundle\WorkflowBundle\Flow\NextStateInterface;
 

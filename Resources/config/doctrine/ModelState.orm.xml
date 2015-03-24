@@ -26,7 +26,7 @@
 
         <field name="createdAt" column="created_at" type="datetime" />
 
-        <field name="data" column="data" type="text" nullable="true" />
+        <field name="data" column="data" type="json_array" nullable="true" />
 
         <field name="errors" column="errors" type="text" nullable="true" />
 
